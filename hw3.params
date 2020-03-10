@@ -1,5 +1,5 @@
-Experiment ID                :onemax
-Problem Type                 :OM
+Experiment ID                :IteratedPrisonersDilemma
+Problem Type                 :IPD
 Data Input File Name         :NA
 Number of Runs               :10
 Generations per Run          :200
