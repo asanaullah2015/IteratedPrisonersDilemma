@@ -13,7 +13,7 @@ public class Chromo
 *                            INSTANCE VARIABLES                                *
 *******************************************************************************/
 
-	public String chromo;
+	public Strategy strat;
 	public double rawFitness;
 	public double sclFitness;
 	public double proFitness;
@@ -29,18 +29,7 @@ public class Chromo
 *******************************************************************************/
 
 	public Chromo(){
-
-		//  Set gene values to a randum sequence of 1's and 0's
-		char geneBit;
-		chromo = "";
-		for (int i=0; i<Parameters.numGenes; i++){
-			for (int j=0; j<Parameters.geneSize; j++){
-				randnum = Search.r.nextDouble();
-				if (randnum > 0.5) geneBit = '0';
-				else geneBit = '1';
-				this.chromo = chromo + geneBit;
-			}
-		}
+		
 
 		this.rawFitness = -1;   //  Fitness not yet evaluated
 		this.sclFitness = -1;   //  Fitness not yet scaled
