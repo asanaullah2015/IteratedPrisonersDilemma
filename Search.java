@@ -17,18 +17,16 @@ public class Search {
 *                           STATIC VARIABLES                                   *
 *******************************************************************************/
 
-	public static FitnessFunction problem;
+	public static Strategy[] member;
+	public static Strategy[] child;
 
-	public static Chromo[] member;
-	public static Chromo[] child;
-
-	public static Chromo bestOfGenChromo;
+	public static int bestOfGenStrategy;
 	public static int bestOfGenR;
 	public static int bestOfGenG;
-	public static Chromo bestOfRunChromo;
+	public static int bestOfRunStrategy;
 	public static int bestOfRunR;
 	public static int bestOfRunG;
-	public static Chromo bestOverAllChromo;
+	public static int bestOverAllStrategy;
 	public static int bestOverAllR;
 	public static int bestOverAllG;
 
@@ -93,28 +91,16 @@ public class Search {
 	//	the appropriate class file (extending FitnessFunction.java) and add
 	//	an else_if block below to instantiate the problem.
  
-		if (Parameters.problemType.equals("NM")){
-				problem = new NumberMatch();
+		if (!Parameters.problemType.equals("IPD")){
+			System.out.println("Invalid Problem Type");
 		}
-		else if (Parameters.problemType.equals("OM")){
-				problem = new OneMax();
-		}
-		else if (Parameters.problemType.equals("IPD")){
-				problem = new IteratedPD();
-		}
-		else System.out.println("Invalid Problem Type");
-
-		System.out.println(problem.name);
 
 	//	Initialize RNG, array sizes and other objects
 		r.setSeed(Parameters.seed);
 		memberIndex = new int[Parameters.popSize];
 		memberFitness = new double[Parameters.popSize];
-		member = new Chromo[Parameters.popSize];
-		child = new Chromo[Parameters.popSize];
-		bestOfGenChromo = new Chromo();
-		bestOfRunChromo = new Chromo();
-		bestOverAllChromo = new Chromo();
+		member = new Strategy[Parameters.popSize];
+		child = new Strategy[Parameters.popSize];
 
 		if (Parameters.minORmax.equals("max")){
 			defaultBest = 0;
@@ -125,18 +111,23 @@ public class Search {
 			defaultWorst = 0;
 		}
 
-		bestOverAllChromo.rawFitness = defaultBest;
+		bestOfGenStrategy = -1;
+		int bestOfGenStrategyrawFitness = defaultBest;
+		bestOfRunStrategy = -1;
+		int bestOfRunStrategyrawFitness = defaultBest;
+		bestOverAllStrategy = -1;
+		int bestOverAllStrategyrawFitness = defaultBest;
 
 		//  Start program for multiple runs
 		for (R = 1; R <= Parameters.numRuns; R++){
 
-			bestOfRunChromo.rawFitness = defaultBest;
+			bestOfRunStrategyrawFitness = defaultBest;
 			System.out.println();
 
 			//	Initialize First Generation
 			for (int i=0; i<Parameters.popSize; i++){
-				member[i] = new Chromo();
-				child[i] = new Chromo();
+				member[i] = new Strategy();
+				child[i] = new Strategy();
 			}
 
 			//	Begin Each Run
@@ -146,51 +137,66 @@ public class Search {
 				sumSclFitness = 0;
 				sumRawFitness = 0;
 				sumRawFitness2 = 0;
-				bestOfGenChromo.rawFitness = defaultBest;
+				bestOfGenStrategyrawFitness = defaultBest;
+
+				int rawFitness[] = new int[Parameters.popSize];
+				int sclFitness[] = new int[Parameters.popSize];
+				int proFitness[] = new int[Parameters.popSize];
+
+				for (int i = 0; i<Parameters.popSize(); i++){
+					rawFitness[i] = 0;
+					sclFitness[i] = 0;
+					proFitness[i] = 0;
+				}
 
 				//	Test Fitness of Each Member
+				int numSteps = Parameters.getNextSteps();
+				for (int i = 0; i<Parameters.popSize(); i++){
+					for (int j = i+1; j<Parameters.popSize(); j++){
+						IteratedPD ipd = new IteratedPD(member[i], member[j]);
+						ipd.runSteps(Parameters.getNextSteps());
+						rawFitness[i] += ipd.player1Score();
+						rawFitness[j] += ipd.player2Score();
+					}
+				}
+
+
 				for (int i=0; i<Parameters.popSize; i++){
-
-					member[i].rawFitness = 0;
-					member[i].sclFitness = 0;
-					member[i].proFitness = 0;
-
-					problem.doRawFitness(member[i]);
-
-					sumRawFitness = sumRawFitness + member[i].rawFitness;
+					
+					sumRawFitness = sumRawFitness + rawFitness[i];
 					sumRawFitness2 = sumRawFitness2 +
-						member[i].rawFitness * member[i].rawFitness;
+						rawFitness[i] * rawFitness[i];
 
 					if (Parameters.minORmax.equals("max")){
-						if (member[i].rawFitness > bestOfGenChromo.rawFitness){
-							Chromo.copyB2A(bestOfGenChromo, member[i]);
+						if (rawFitness[i] > bestOfGenStrategyrawFitness){
+							bestOfGenStrategy = i;
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
-						if (member[i].rawFitness > bestOfRunChromo.rawFitness){
-							Chromo.copyB2A(bestOfRunChromo, member[i]);
+						if (member[i].rawFitness > bestOfRunStrategy.rawFitness){
+							bestOfRunStrategy = i;
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
-						if (member[i].rawFitness > bestOverAllChromo.rawFitness){
-							Chromo.copyB2A(bestOverAllChromo, member[i]);
+						if (member[i].rawFitness > bestOverAllStrategy.rawFitness){
+							bestOverAllStrategy = i;
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
 					}
 					else {
-						if (member[i].rawFitness < bestOfGenChromo.rawFitness){
-							Chromo.copyB2A(bestOfGenChromo, member[i]);
+						if (member[i].rawFitness < bestOfGenStrategy.rawFitness){
+							bestOfGenStrategy = i;
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
-						if (member[i].rawFitness < bestOfRunChromo.rawFitness){
-							Chromo.copyB2A(bestOfRunChromo, member[i]);
+						if (member[i].rawFitness < bestOfRunStrategy.rawFitness){
+							bestOfRunStrategy = i;
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
-						if (member[i].rawFitness < bestOverAllChromo.rawFitness){
-							Chromo.copyB2A(bestOverAllChromo, member[i]);
+						if (member[i].rawFitness < bestOverAllStrategy.rawFitness){
+							bestOverAllStrategy = [i];
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
@@ -199,7 +205,7 @@ public class Search {
 
 				// Accumulate fitness statistics
 				fitnessStats[0][G] += sumRawFitness / Parameters.popSize;
-				fitnessStats[1][G] += bestOfGenChromo.rawFitness;
+				fitnessStats[1][G] += bestOfGenStrategyrawFitness;
 
 				averageRawFitness = sumRawFitness / Parameters.popSize;
 				stdevRawFitness = Math.sqrt(
@@ -210,14 +216,14 @@ public class Search {
 							);
 
 				// Output generation statistics to screen
-				System.out.println(R + "\t" + G +  "\t" + (int)bestOfGenChromo.rawFitness + "\t" + averageRawFitness + "\t" + stdevRawFitness);
+				System.out.println(R + "\t" + G +  "\t" + (int)bestOfGenStrategy.rawFitness + "\t" + averageRawFitness + "\t" + stdevRawFitness);
 
 				// Output generation statistics to summary file
 				summaryOutput.write(" R ");
 				Hwrite.right(R, 3, summaryOutput);
 				summaryOutput.write(" G ");
 				Hwrite.right(G, 3, summaryOutput);
-				Hwrite.right((int)bestOfGenChromo.rawFitness, 7, summaryOutput);
+				Hwrite.right((int)bestOfGenStrategy.rawFitness, 7, summaryOutput);
 				Hwrite.right(averageRawFitness, 11, 3, summaryOutput);
 				Hwrite.right(stdevRawFitness, 11, 3, summaryOutput);
 				summaryOutput.write("\n");
@@ -324,20 +330,20 @@ public class Search {
 				for (int i=0; i<Parameters.popSize; i=i+2){
 
 					//	Select Two Parents
-					parent1 = Chromo.selectParent();
+					parent1 = Strategy.selectParent();
 					parent2 = parent1;
 					while (parent2 == parent1){
-						parent2 = Chromo.selectParent();
+						parent2 = Strategy.selectParent();
 					}
 
 					//	Crossover Two Parents to Create Two Children
 					randnum = r.nextDouble();
 					if (randnum < Parameters.xoverRate){
-						Chromo.mateParents(parent1, parent2, member[parent1], member[parent2], child[i], child[i+1]);
+						Strategy.mateParents(parent1, parent2, member[parent1], member[parent2], child[i], child[i+1]);
 					}
 					else {
-						Chromo.mateParents(parent1, member[parent1], child[i]);
-						Chromo.mateParents(parent2, member[parent2], child[i+1]);
+						Strategy.mateParents(parent1, member[parent1], child[i]);
+						Strategy.mateParents(parent2, member[parent2], child[i+1]);
 					}
 				} // End Crossover
 
@@ -348,7 +354,7 @@ public class Search {
 
 				//	Swap Children with Last Generation
 				for (int i=0; i<Parameters.popSize; i++){
-					Chromo.copyB2A(member[i], child[i]);
+					Strategy.copyB2A(member[i], child[i]);
 				}
 
 			} //  Repeat the above loop for each generation
@@ -356,15 +362,15 @@ public class Search {
 			Hwrite.left(bestOfRunR, 4, summaryOutput);
 			Hwrite.right(bestOfRunG, 4, summaryOutput);
 
-			problem.doPrintGenes(bestOfRunChromo, summaryOutput);
+			problem.doPrintGenes(bestOfRunStrategy, summaryOutput);
 
-			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunChromo.rawFitness);
+			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategy.rawFitness);
 
 		} //End of a Run
 
 		Hwrite.left("B", 8, summaryOutput);
 
-		problem.doPrintGenes(bestOverAllChromo, summaryOutput);
+		problem.doPrintGenes(bestOverAllStrategy, summaryOutput);
 
 		//	Output Fitness Statistics matrix
 		summaryOutput.write("Gen                 AvgFit              BestFit \n");
