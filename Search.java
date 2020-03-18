@@ -152,7 +152,7 @@ public class Search {
 				//	Test Fitness of Each Member
 				int numSteps = Parameters.getNextSteps();
 				for (int i = 0; i<Parameters.popSize(); i++){
-					for (int j = i+1; j<Parameters.popSize(); j++){
+					for (int j = i; j<Parameters.popSize(); j++){
 						IteratedPD ipd = new IteratedPD(member[i], member[j]);
 						ipd.runSteps(Parameters.getNextSteps());
 						rawFitness[i] += ipd.player1Score();
