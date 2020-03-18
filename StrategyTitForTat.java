@@ -20,5 +20,7 @@ public class StrategyTitForTat extends Strategy
       {
       return opponentLastMove;
       }  /* nextMove */
-
+   public void doMutation(){};
+   public void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy child1, Strategy child2) {};
+   public void mateParents(int pnum, Strategy parent, Strategy Child) {};
    }  /* class StrategyTitForTat */
