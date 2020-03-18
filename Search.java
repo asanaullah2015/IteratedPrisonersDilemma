@@ -173,29 +173,29 @@ public class Search {
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
-						if (member[i].rawFitness > bestOfRunStrategy.rawFitness){
+						if (member[i].rawFitness > bestOfRunStrategyrawFitness){
 							bestOfRunStrategy = i;
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
-						if (member[i].rawFitness > bestOverAllStrategy.rawFitness){
+						if (member[i].rawFitness > bestOverAllStrategyrawFitness){
 							bestOverAllStrategy = i;
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
 					}
 					else {
-						if (member[i].rawFitness < bestOfGenStrategy.rawFitness){
+						if (member[i].rawFitness < bestOfGenStrategyrawFitness){
 							bestOfGenStrategy = i;
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
-						if (member[i].rawFitness < bestOfRunStrategy.rawFitness){
+						if (member[i].rawFitness < bestOfRunStrategyrawFitness){
 							bestOfRunStrategy = i;
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
-						if (member[i].rawFitness < bestOverAllStrategy.rawFitness){
+						if (member[i].rawFitness < bestOverAllStrategyrawFitness){
 							bestOverAllStrategy = [i];
 							bestOverAllR = R;
 							bestOverAllG = G;
@@ -216,14 +216,14 @@ public class Search {
 							);
 
 				// Output generation statistics to screen
-				System.out.println(R + "\t" + G +  "\t" + (int)bestOfGenStrategy.rawFitness + "\t" + averageRawFitness + "\t" + stdevRawFitness);
+				System.out.println(R + "\t" + G +  "\t" + (int)bestOfGenStrategyrawFitness + "\t" + averageRawFitness + "\t" + stdevRawFitness);
 
 				// Output generation statistics to summary file
 				summaryOutput.write(" R ");
 				Hwrite.right(R, 3, summaryOutput);
 				summaryOutput.write(" G ");
 				Hwrite.right(G, 3, summaryOutput);
-				Hwrite.right((int)bestOfGenStrategy.rawFitness, 7, summaryOutput);
+				Hwrite.right((int)bestOfGenStrategyrawFitness, 7, summaryOutput);
 				Hwrite.right(averageRawFitness, 11, 3, summaryOutput);
 				Hwrite.right(stdevRawFitness, 11, 3, summaryOutput);
 				summaryOutput.write("\n");
@@ -237,15 +237,15 @@ public class Search {
 
 				case 0:     // No change to raw fitness
 					for (int i=0; i<Parameters.popSize; i++){
-						member[i].sclFitness = member[i].rawFitness + .000001;
-						sumSclFitness += member[i].sclFitness;
+						sclFitness[i] = rawFitness[i] + .000001;
+						sumSclFitness += sclFitness[i];
 					}
 					break;
 
 				case 1:     // Fitness not scaled.  Only inverted.
 					for (int i=0; i<Parameters.popSize; i++){
-						member[i].sclFitness = 1/(member[i].rawFitness + .000001);
-						sumSclFitness += member[i].sclFitness;
+						sclFitness[i] = 1/(rawFitness[i] + .000001);
+						sumSclFitness += sclFitness[i];
 					}
 					break;
 
@@ -254,7 +254,7 @@ public class Search {
 					//  Copy genetic data to temp array
 					for (int i=0; i<Parameters.popSize; i++){
 						memberIndex[i] = i;
-						memberFitness[i] = member[i].rawFitness;
+						memberFitness[i] = rawFitness[i];
 					}
 					//  Bubble Sort the array by floating point number
 					for (int i=Parameters.popSize-1; i>0; i--){
@@ -271,8 +271,8 @@ public class Search {
 					}
 					//  Copy ordered array to scale fitness fields
 					for (int i=0; i<Parameters.popSize; i++){
-						member[memberIndex[i]].sclFitness = i;
-						sumSclFitness += member[memberIndex[i]].sclFitness;
+						sclFitness[memberIndex[i]] = i;
+						sumSclFitness += sclFitness[memberIndex[i]];
 					}
 
 					break;
@@ -282,7 +282,7 @@ public class Search {
 					//  Copy genetic data to temp array
 					for (int i=0; i<Parameters.popSize; i++){
 						memberIndex[i] = i;
-						memberFitness[i] = member[i].rawFitness;
+						memberFitness[i] = rawFitness[i];
 					}
 					//  Bubble Sort the array by floating point number
 					for (int i=1; i<Parameters.popSize; i++){
@@ -299,8 +299,8 @@ public class Search {
 					}
 					//  Copy array order to scale fitness fields
 					for (int i=0; i<Parameters.popSize; i++){
-						member[memberIndex[i]].sclFitness = i;
-						sumSclFitness += member[memberIndex[i]].sclFitness;
+						sclFitness[memberIndex[i]] = i;
+						sumSclFitness += sclFitness[memberIndex[i]];
 					}
 
 					break;
@@ -315,8 +315,8 @@ public class Search {
 		// *********************************************************************
 
 				for (int i=0; i<Parameters.popSize; i++){
-					member[i].proFitness = member[i].sclFitness/sumSclFitness;
-					sumProFitness = sumProFitness + member[i].proFitness;
+					proFitness[i] = sclFitness[i]/sumSclFitness;
+					sumProFitness = sumProFitness + proFitness[i];
 				}
 
 		// *********************************************************************
