@@ -29,7 +29,7 @@ public class Strategy extends Object
    public void saveMyMove(int move)  { myLastMove = move; }
    public int getMyLastMove()  { return myLastMove; }
    public String getName()  { return name; }
-   public void doMutation(){};
+   public void doMutation(){}
    public static int selectParent() {
 	   double rWheel = 0;
 	   int j = 0;
@@ -74,6 +74,27 @@ public class Strategy extends Object
 	   }
 	   return(-1);
    }
-   public void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy child1, Strategy child2) {};
-   public void mateParents(int pnum, Strategy parent, Strategy Child) {};
+   public static void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy child1, Strategy child2) {
+	if (parent1 instanceof parent2 && parent2 instanceof parent1){
+		parent1.crossover(pnum2, parent2, child1);
+		parent2.crossover(pnum1, parent1, child2);
+	}
+	else {
+		int x = Search.r.nextInt(2);
+		int y = Search.r.nextInt(2);
+		if (x == 0){
+			parent1.copytoChild(child1);
+		}
+		else{
+			parent2.copytoChild(child1);
+		}
+		if (y == 0){
+			parent1.copytoChild(child2);
+		}
+		else {
+			parent2.copytoChild(child2);
+		}
+	}
+   }
+   public void copytoChild(Strategy child) {};
    }  /* class Strategy */
