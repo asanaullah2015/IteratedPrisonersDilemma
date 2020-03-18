@@ -30,7 +30,33 @@ public class Strategy extends Object
    public int getMyLastMove()  { return myLastMove; }
    public String getName()  { return name; }
    public void doMutation(){};
-   public static int selectParent() { return 0;}
+   public static int selectParent() {
+	   double rWheel = 0;
+	   int j = 0;
+	   int k = 0;
+
+	   switch (Parameters.selectType){
+
+		   case 1:     // Proportional Selection
+			   randnum = Search.r.nextDouble();
+			   for (j=0; j<Parameters.popSize; j++){
+				   rWheel = rWheel + Search.proFitness[j];
+				   if (randnum < rWheel) return(j);
+			   }
+			   break;
+
+		   case 3:     // Random Selection
+			   randnum = Search.r.nextDouble();
+			   j = (int) (randnum * Parameters.popSize);
+			   return(j);
+
+		   case 2:     //  Tournament Selection
+
+		   default:
+			   System.out.println("ERROR - No selection method selected");
+	   }
+	   return(-1);
+   }
    public void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy child1, Strategy child2) {};
    public void mateParents(int pnum, Strategy parent, Strategy Child) {};
    }  /* class Strategy */
