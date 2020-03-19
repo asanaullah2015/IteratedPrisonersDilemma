@@ -19,6 +19,9 @@ public class Search {
 
 	public static Strategy[] member;
 	public static Strategy[] child;
+	public static int[] rawFitness;
+	public static int[] sclFitness;
+	public static int[] proFitness;
 
 	public static int bestOfGenStrategy;
 	public static int bestOfGenR;
@@ -139,9 +142,9 @@ public class Search {
 				sumRawFitness2 = 0;
 				bestOfGenStrategyrawFitness = defaultBest;
 
-				int rawFitness[] = new int[Parameters.popSize];
-				int sclFitness[] = new int[Parameters.popSize];
-				int proFitness[] = new int[Parameters.popSize];
+				rawFitness = new int[Parameters.popSize];
+				sclFitness = new int[Parameters.popSize];
+				proFitness = new int[Parameters.popSize];
 
 				for (int i = 0; i<Parameters.popSize(); i++){
 					rawFitness[i] = 0;
@@ -154,7 +157,7 @@ public class Search {
 				for (int i = 0; i<Parameters.popSize(); i++){
 					for (int j = i; j<Parameters.popSize(); j++){
 						IteratedPD ipd = new IteratedPD(member[i], member[j]);
-						ipd.runSteps(Parameters.getNextSteps());
+						ipd.runSteps(numsteps);
 						rawFitness[i] += ipd.player1Score();
 						rawFitness[j] += ipd.player2Score();
 					}
