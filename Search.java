@@ -19,17 +19,17 @@ public class Search {
 
 	public static Strategy[] member;
 	public static Strategy[] child;
-	public static int[] rawFitness;
-	public static int[] sclFitness;
-	public static int[] proFitness;
+	public static double[] rawFitness;
+	public static double[] sclFitness;
+	public static double[] proFitness;
 
-	public static int bestOfGenStrategy;
+	public static Strategy bestOfGenStrategy;
 	public static int bestOfGenR;
 	public static int bestOfGenG;
-	public static int bestOfRunStrategy;
+	public static Strategy bestOfRunStrategy;
 	public static int bestOfRunR;
 	public static int bestOfRunG;
-	public static int bestOverAllStrategy;
+	public static Strategy bestOverAllStrategy;
 	public static int bestOverAllR;
 	public static int bestOverAllG;
 
@@ -114,12 +114,12 @@ public class Search {
 			defaultWorst = 0;
 		}
 
-		bestOfGenStrategy = -1;
-		int bestOfGenStrategyrawFitness = defaultBest;
-		bestOfRunStrategy = -1;
-		int bestOfRunStrategyrawFitness = defaultBest;
-		bestOverAllStrategy = -1;
-		int bestOverAllStrategyrawFitness = defaultBest;
+		bestOfGenStrategy = new Strategy();
+		double bestOfGenStrategyrawFitness = defaultBest;
+		bestOfRunStrategy = new Strategy();
+		double bestOfRunStrategyrawFitness = defaultBest;
+		bestOverAllStrategy = new Strategy();
+		double bestOverAllStrategyrawFitness = defaultBest;
 
 		//  Start program for multiple runs
 		for (R = 1; R <= Parameters.numRuns; R++){
@@ -129,6 +129,8 @@ public class Search {
 
 			//	Initialize First Generation
 			for (int i=0; i<Parameters.popSize; i++){
+				//--------------------------
+				//TODO: Make actual random generation.
 				member[i] = new Strategy();
 				child[i] = new Strategy();
 			}
@@ -142,11 +144,11 @@ public class Search {
 				sumRawFitness2 = 0;
 				bestOfGenStrategyrawFitness = defaultBest;
 
-				rawFitness = new int[Parameters.popSize];
-				sclFitness = new int[Parameters.popSize];
-				proFitness = new int[Parameters.popSize];
+				rawFitness = new double[Parameters.popSize];
+				sclFitness = new double[Parameters.popSize];
+				proFitness = new double[Parameters.popSize];
 
-				for (int i = 0; i<Parameters.popSize(); i++){
+				for (int i = 0; i<Parameters.popSize; i++){
 					rawFitness[i] = 0;
 					sclFitness[i] = 0;
 					proFitness[i] = 0;
@@ -154,10 +156,10 @@ public class Search {
 
 				//	Test Fitness of Each Member
 				int numSteps = Parameters.getNextSteps();
-				for (int i = 0; i<Parameters.popSize(); i++){
-					for (int j = i; j<Parameters.popSize(); j++){
+				for (int i = 0; i<Parameters.popSize; i++){
+					for (int j = i; j<Parameters.popSize; j++){
 						IteratedPD ipd = new IteratedPD(member[i], member[j]);
-						ipd.runSteps(numsteps);
+						ipd.runSteps(numSteps);
 						rawFitness[i] += ipd.player1Score();
 						rawFitness[j] += ipd.player2Score();
 					}
@@ -172,34 +174,34 @@ public class Search {
 
 					if (Parameters.minORmax.equals("max")){
 						if (rawFitness[i] > bestOfGenStrategyrawFitness){
-							bestOfGenStrategy = i;
+							member[i].copytoChild(bestOfGenStrategy);
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
-						if (member[i].rawFitness > bestOfRunStrategyrawFitness){
-							bestOfRunStrategy = i;
+						if (rawFitness[i] > bestOfRunStrategyrawFitness){
+							member[i].copytoChild(bestOfRunStrategy);
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
-						if (member[i].rawFitness > bestOverAllStrategyrawFitness){
-							bestOverAllStrategy = i;
+						if (rawFitness[i] > bestOverAllStrategyrawFitness){
+							member[i].copytoChild(bestOverAllStrategy);
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
 					}
 					else {
-						if (member[i].rawFitness < bestOfGenStrategyrawFitness){
-							bestOfGenStrategy = i;
+						if (rawFitness[i] < bestOfGenStrategyrawFitness){
+							member[i].copytoChild(bestOfGenStrategy);
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
-						if (member[i].rawFitness < bestOfRunStrategyrawFitness){
-							bestOfRunStrategy = i;
+						if (rawFitness[i] < bestOfRunStrategyrawFitness){
+							member[i].copytoChild(bestOfRunStrategy);
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
-						if (member[i].rawFitness < bestOverAllStrategyrawFitness){
-							bestOverAllStrategy = [i];
+						if (rawFitness[i] < bestOverAllStrategyrawFitness){
+							member[i].copytoChild(bestOverAllStrategy);
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
@@ -345,8 +347,8 @@ public class Search {
 						Strategy.mateParents(parent1, parent2, member[parent1], member[parent2], child[i], child[i+1]);
 					}
 					else {
-						Strategy.mateParents(parent1, member[parent1], child[i]);
-						Strategy.mateParents(parent2, member[parent2], child[i+1]);
+						member[parent1].copytoChild(child[i]);
+						member[parent2].copytoChild(child[i+1]);
 					}
 				} // End Crossover
 
@@ -357,7 +359,7 @@ public class Search {
 
 				//	Swap Children with Last Generation
 				for (int i=0; i<Parameters.popSize; i++){
-					Strategy.copyB2A(member[i], child[i]);
+					child[i].copytoChild(member[i]);
 				}
 
 			} //  Repeat the above loop for each generation
@@ -365,15 +367,15 @@ public class Search {
 			Hwrite.left(bestOfRunR, 4, summaryOutput);
 			Hwrite.right(bestOfRunG, 4, summaryOutput);
 
-			problem.doPrintGenes(bestOfRunStrategy, summaryOutput);
+			bestOfRunStrategy.doPrintGenes(summaryOutput);
 
-			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategy.rawFitness);
+			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategyrawFitness);
 
 		} //End of a Run
 
 		Hwrite.left("B", 8, summaryOutput);
 
-		problem.doPrintGenes(bestOverAllStrategy, summaryOutput);
+		bestOverAllStrategy.doPrintGenes(summaryOutput);
 
 		//	Output Fitness Statistics matrix
 		summaryOutput.write("Gen                 AvgFit              BestFit \n");

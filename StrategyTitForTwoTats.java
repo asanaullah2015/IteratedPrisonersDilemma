@@ -39,5 +39,12 @@ public class StrategyTitForTwoTats extends Strategy
          }
 
       }  /* nextMove */
+   public void copytoChild(Strategy child){
+	   child = new StrategyTitForTwoTats();
+   }
+   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
+	   child1 = new StrategyTitForTwoTats();
+	   child2 = new StrategyTitForTwoTats();
+   }
 
    }  /* class StrategyTitForTwoTats */

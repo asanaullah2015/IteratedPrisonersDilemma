@@ -20,5 +20,12 @@ public class StrategyTitForTat extends Strategy
       {
       return opponentLastMove;
       }  /* nextMove */
+   public void copytoChild(Strategy child){
+	   child = new StrategyTitForTat();
+   }
+   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
+	   child1 = new StrategyTitForTat();
+	   child2 = new StrategyTitForTat();
+   }
 
    }  /* class StrategyTitForTat */

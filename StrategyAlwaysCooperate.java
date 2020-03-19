@@ -19,4 +19,13 @@ public class StrategyAlwaysCooperate extends Strategy
       {
       return 1;
       }  /* nextMove */
+   public void copytoChild(Strategy child){
+	   child = new StrategyAlwaysCooperate();
+   }
+   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
+	   child1 = new StrategyAlwaysCooperate();
+	   child2 = new StrategyAlwaysCooperate();
+   }
+
    }  /* class StrategyAlwaysCooperate */
+

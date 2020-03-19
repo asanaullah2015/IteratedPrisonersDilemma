@@ -38,7 +38,7 @@ public class Strategy extends Object
 	   switch (Parameters.selectType){
 
 		   case 1:     // Proportional Selection
-			   randnum = Search.r.nextDouble();
+			   double randnum = Search.r.nextDouble();
 			   for (j=0; j<Parameters.popSize; j++){
 				   rWheel = rWheel + Search.proFitness[j];
 				   if (randnum < rWheel) return(j);
@@ -75,9 +75,8 @@ public class Strategy extends Object
 	   return(-1);
    }
    public static void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy child1, Strategy child2) {
-	if (parent1 instanceof parent2 && parent2 instanceof parent1){
-		parent1.crossover(pnum2, parent2, child1);
-		parent2.crossover(pnum1, parent1, child2);
+	if (parent1.getClass().equals(parent2.getClass())){
+		parent1.crossover(pnum2, parent2, child1, child2);
 	}
 	else {
 		int x = Search.r.nextInt(2);
@@ -97,4 +96,5 @@ public class Strategy extends Object
 	}
    }
    public void copytoChild(Strategy child) {};
+   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2) {};
    }  /* class Strategy */
