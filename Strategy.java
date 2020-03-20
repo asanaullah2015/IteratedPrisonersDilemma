@@ -51,6 +51,23 @@ public class Strategy extends Object
 			   return(j);
 
 		   case 2:     //  Tournament Selection
+			int temp;
+			int candidate[] = new int[4];
+			for (int i = 0; i < 4; ++i)
+				candidate[i] = Search.r.nextInt(Parameters.popSize);
+			for (int i = 3; i > 0; i--) {
+				for (j = 0; j < i; j++) {
+					if (Search.proFitness[candidate[j]] > Search.proFitness[candidate[j + 1]]) {
+						temp = candidate[j];
+						candidate[j] = candidate[j + 1];
+						candidate[j + 1] = temp;
+					}
+				}
+			}
+			for (int i = 3; i > 0; i--)
+				if (Search.r.nextDouble() < 0.6)
+					return candidate[i];
+			return candidate[0];
 
 		   default:
 			   System.out.println("ERROR - No selection method selected");
