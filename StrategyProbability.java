@@ -25,7 +25,7 @@ public class StrategyProbability extends Strategy {
         child = new StrategyProbability();
     }
 
-    public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2) {
+    public void crossover(int pnum2, StrategyProbability parent2, StrategyProbability child1, StrategyProbability child2) {
         // Create children
         child1 = new StrategyProbability();
         child2 = new StrategyProbability();
@@ -33,7 +33,7 @@ public class StrategyProbability extends Strategy {
         // Generate random numbers to determine how to crossover
         int randnum1 = Search.r.nextInt(2);
         int randnum2 = Search.r.nextInt(2);
-        
+
         if (randnum1 == 0) { // Subtract parents to create child1
             int subtract1from2 = Search.r.nextInt(2); // Subtraction is not commutative, randomly subtract one from the other
             if (subtract1from2 == 0) {
