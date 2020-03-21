@@ -20,6 +20,9 @@ public class StrategyTitForTat extends Strategy
       {
       return opponentLastMove;
       }  /* nextMove */
+
+   public void doMutation(){};
+      
    public void copytoChild(Strategy child){
 	   child = new StrategyTitForTat();
    }
