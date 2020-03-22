@@ -9,6 +9,7 @@ public class StrategyProbability extends Strategy {
 
     public StrategyProbability() {
         name = "Probability";
+        probabilityDefect = Math.random();
     }
 
     public int nextMove() {
