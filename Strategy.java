@@ -29,12 +29,7 @@ public class Strategy extends Object
    public void saveMyMove(int move)  { myLastMove = move; }
    public int getMyLastMove()  { return myLastMove; }
    public String getName()  { return name; }
-<<<<<<< HEAD
-   public void doMutation(){};
-   
-=======
    public void doMutation(){}
->>>>>>> e09a66ff2e75bdb6b2892314aaded11592d11a98
    public static int selectParent() {
 	   double rWheel = 0;
 	   int j = 0;
