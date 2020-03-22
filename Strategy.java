@@ -2,6 +2,11 @@
  * Class containing an type of Strategy.
  * @author	081028AW
  */
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+
 public class Strategy extends Object
    {
   /**
@@ -98,4 +103,5 @@ public class Strategy extends Object
    }
    public void copytoChild(Strategy child) {};
    public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2) {};
+   public void doPrintGenes(FileWriter output){}
    }  /* class Strategy */

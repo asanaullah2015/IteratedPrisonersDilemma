@@ -29,4 +29,7 @@ public class StrategyAlwaysDefect extends Strategy
 	   child1 = new StrategyAlwaysDefect();
 	   child2 = new StrategyAlwaysDefect();
    }
+   public void doPrintGenes(FileWriter output){
+	   output.write("StrategyAlwaysDefect");
+   }
    }  /* class StrategyAlwaysDefect */

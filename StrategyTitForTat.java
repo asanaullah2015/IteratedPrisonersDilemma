@@ -31,4 +31,7 @@ public class StrategyTitForTat extends Strategy
 	   child2 = new StrategyTitForTat();
    }
 
+   public void doPrintGenes(FileWriter output){
+	   output.write("StrategyTitForTat\n"):
+   }
    }  /* class StrategyTitForTat */

@@ -1,6 +1,6 @@
 public class StrategyProbability extends Strategy {
 
-    public static double probabilityDefect = 0.5;
+    public double probabilityDefect = 0.5;
 
     /**
      * Encoding for a strategy.
@@ -13,12 +13,12 @@ public class StrategyProbability extends Strategy {
     }
 
     public int nextMove() {
-        if (Math.random() < probabilityDefect) return 0;
+        if (Search.r.nextDouble() < probabilityDefect) return 0;
         return 1;
     }
 
     public void doMutation() {
-        if (Math.random() < Parameters.mutationRate) {
+        if (Search.r.nextDouble() < Parameters.mutationRate) {
             probabilityDefect = Math.random();
         }
     }
@@ -90,5 +90,12 @@ public class StrategyProbability extends Strategy {
             }
         }
 
+    }
+
+    public void doPrintGenes(FileWriter output){
+	    output.write("StrategyProbability\n");
+	    output.write("Probability Defect = ");
+	    Hwrite.right(probabilityDefect, 8, output);
+	    output.write("\n");
     }
 }
