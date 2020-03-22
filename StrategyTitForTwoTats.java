@@ -50,4 +50,7 @@ public class StrategyTitForTwoTats extends Strategy
 	   child2 = new StrategyTitForTwoTats();
    }
 
+   public void doPrintGenes(FileWriter output){
+	   output.write("StrategyTitForTwoTats\n");
+   }
    }  /* class StrategyTitForTwoTats */

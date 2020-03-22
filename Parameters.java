@@ -38,6 +38,8 @@ public class Parameters
 	public static long seed;
 	public static int numGenes;
 	public static int geneSize;
+	public static int a;
+	public static int b;
 
 /*******************************************************************************
 *                              CONSTRUCTORS                                    *
@@ -68,6 +70,8 @@ public class Parameters
 		seed = Long.parseLong(parmInput.readLine().substring(30).trim());
 		numGenes = Integer.parseInt(parmInput.readLine().substring(30).trim());
 		geneSize = Integer.parseInt(parmInput.readLine().substring(30).trim());
+		a = Integer.parseInt(parmInput.readLine().substring(30).trim());
+		b = Integer.parseInt(parmInput.readLine().substring(30).trim());
 
 		parmInput.close();
 
@@ -109,8 +113,13 @@ public class Parameters
 		output.write("Random Number Seed           :  " + seed + "\n");
 		output.write("Number of Genes/Points       :  " + numGenes + "\n");
 		output.write("Size of Genes                :  " + geneSize + "\n");
+		output.write("Steps Interval Begin         :  " + a + "\n");
+		output.write("Steps Interval End           :  " + b + "\n");
 
 		output.write("\n\n");
 
+	}
+	public static int getNextSteps(){
+		return a+Search.r.nextInt(b-a);
 	}
 }   // End of Parameters.java **************************************************

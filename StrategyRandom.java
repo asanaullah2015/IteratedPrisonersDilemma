@@ -29,5 +29,7 @@ public class StrategyRandom extends Strategy
    public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
 	   child1 = new StrategyRandom();
 	   child2 = new StrategyRandom();
-   }
+   } 
+   public void doPrintGenes(FileWriter output){
+	   output.write("StrategyRandom, probabilitDefect=0.5\n"):
    }  /* class StrategyRandom */

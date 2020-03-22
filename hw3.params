@@ -12,7 +12,9 @@ Mutation Type (5)            :1
 Mutation Rate (6)            :0.005
 Random Number Seed           :75982
 Number of Genes/Points (7)   :1
-Size of Genes (18)           :100
+Size of Genes (8)            :100
+Steps Interval Begin (9)     :10
+Steps Interval End           :100
 
 Notes:
 
@@ -39,3 +41,5 @@ Notes:
 
 8)	Determines number of bits in each gene.  Number of Genes times Size
 	gives the number of bits in each chromosome.
+
+9)	Determines number of steps that IPD is played for each generation, a random integer is used in [a, b). (a is begin and b is end, uniform distribution, b not included).

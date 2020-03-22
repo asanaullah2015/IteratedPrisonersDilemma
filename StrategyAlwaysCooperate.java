@@ -29,6 +29,8 @@ public class StrategyAlwaysCooperate extends Strategy
 	   child1 = new StrategyAlwaysCooperate();
 	   child2 = new StrategyAlwaysCooperate();
    }
+   public void doPrintGenes(FileWriter output){
+	   output.write("StrategyAlwaysCooperate\n");
+   }
 
    }  /* class StrategyAlwaysCooperate */
-
