@@ -31,5 +31,6 @@ public class StrategyRandom extends Strategy
 	   child2 = new StrategyRandom();
    } 
    public void doPrintGenes(FileWriter output){
-	   output.write("StrategyRandom, probabilitDefect=0.5\n"):
+	   output.write("StrategyRandom, probabilitDefect=0.5\n");
    }  /* class StrategyRandom */
+   }

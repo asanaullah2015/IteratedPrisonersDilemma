@@ -32,6 +32,6 @@ public class StrategyTitForTat extends Strategy
    }
 
    public void doPrintGenes(FileWriter output){
-	   output.write("StrategyTitForTat\n"):
+	   output.write("StrategyTitForTat\n");
    }
    }  /* class StrategyTitForTat */
