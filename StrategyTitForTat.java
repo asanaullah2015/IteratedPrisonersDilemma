@@ -2,6 +2,9 @@
  * Class containing the tit-for-tat strategy.
  * @author	081028AW
  */
+
+import java.io.*;
+
 public class StrategyTitForTat extends Strategy
    {
   /**
@@ -32,6 +35,10 @@ public class StrategyTitForTat extends Strategy
    }
 
    public void doPrintGenes(FileWriter output){
-	   output.write("StrategyTitForTat\n");
+      try {
+	      output.write("StrategyTitForTat\n");
+      }
+      catch (IOException e) {
+      }
    }
    }  /* class StrategyTitForTat */

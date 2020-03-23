@@ -1,3 +1,6 @@
+
+import java.io.*;
+
 public class StrategyProbability extends Strategy {
 
     public double probabilityDefect = 0.5;
@@ -93,9 +96,13 @@ public class StrategyProbability extends Strategy {
     }
 
     public void doPrintGenes(FileWriter output){
-	    output.write("StrategyProbability\n");
-	    output.write("Probability Defect = ");
-	    Hwrite.right(probabilityDefect, 8, output);
-	    output.write("\n");
+        try {
+            output.write("StrategyProbability\n");
+            output.write("Probability Defect = ");
+            Hwrite.right(probabilityDefect, 8, output);
+            output.write("\n");
+        }
+        catch (IOException e) {
+        }
     }
 }

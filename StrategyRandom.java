@@ -3,6 +3,8 @@
  * @author	081028AW
  */
 
+import java.io.*;
+
 public class StrategyRandom extends Strategy
    {
   /**
@@ -10,6 +12,8 @@ public class StrategyRandom extends Strategy
    */
   // 0 = defect, 1 = cooperate
   
+   public static double probabilityDefect = 0.5;
+
    public StrategyRandom()
       {
       name = "Random";
@@ -17,8 +21,8 @@ public class StrategyRandom extends Strategy
 
    public int nextMove()
       {
-      if (Math.random() < 0.5)  return 1;
-      return 0;
+      if (Math.random() < probabilityDefect)  return 0;
+      return 1;
       }  /* nextMove */
 
    public void doMutation(){};
@@ -31,6 +35,10 @@ public class StrategyRandom extends Strategy
 	   child2 = new StrategyRandom();
    } 
    public void doPrintGenes(FileWriter output){
-	   output.write("StrategyRandom, probabilitDefect=0.5\n");
+	   try {
+         output.write("StrategyRandom, probabilityDefect=0.5\n");
+      }
+      catch (IOException e) {
+      }
    }  /* class StrategyRandom */
    }

@@ -2,6 +2,9 @@
  * Class containing the always-cooperate strategy.
  * @author	081028AW
  */
+
+import java.io.*;
+
 public class StrategyAlwaysCooperate extends Strategy
    {
   /**
@@ -30,7 +33,11 @@ public class StrategyAlwaysCooperate extends Strategy
 	   child2 = new StrategyAlwaysCooperate();
    }
    public void doPrintGenes(FileWriter output){
-	   output.write("StrategyAlwaysCooperate\n");
+      try {
+         output.write("StrategyAlwaysCooperate\n");
+      }
+      catch (IOException e) {
+      }
    }
 
    }  /* class StrategyAlwaysCooperate */
