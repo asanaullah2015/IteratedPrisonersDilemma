@@ -3,6 +3,9 @@
  * @author	081028AW
  */
 
+import java.io.*;
+import java.util.*;
+import java.text.*;
 public class StrategyRandom extends Strategy
    {
   /**
@@ -30,7 +33,7 @@ public class StrategyRandom extends Strategy
 	   child1 = new StrategyRandom();
 	   child2 = new StrategyRandom();
    } 
-   public void doPrintGenes(FileWriter output){
+   public void doPrintGenes(FileWriter output)throws java.io.IOException{
 	   output.write("StrategyRandom, probabilitDefect=0.5\n");
    }  /* class StrategyRandom */
    }

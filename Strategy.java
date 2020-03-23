@@ -103,5 +103,5 @@ public class Strategy extends Object
    }
    public void copytoChild(Strategy child) {};
    public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2) {};
-   public void doPrintGenes(FileWriter output){}
+   public void doPrintGenes(FileWriter output)throws java.io.IOException{}
    }  /* class Strategy */

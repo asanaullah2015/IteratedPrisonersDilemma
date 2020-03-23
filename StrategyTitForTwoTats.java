@@ -2,6 +2,9 @@
  * Class containing the tit-for-two-tats strategy.
  * @author	081028AW
  */
+import java.io.*;
+import java.util.*;
+import java.text.*;
 public class StrategyTitForTwoTats extends Strategy
    {
   /**
@@ -50,7 +53,7 @@ public class StrategyTitForTwoTats extends Strategy
 	   child2 = new StrategyTitForTwoTats();
    }
 
-   public void doPrintGenes(FileWriter output){
+   public void doPrintGenes(FileWriter output)throws java.io.IOException{
 	   output.write("StrategyTitForTwoTats\n");
    }
    }  /* class StrategyTitForTwoTats */

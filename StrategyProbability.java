@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
 public class StrategyProbability extends Strategy {
 
     public double probabilityDefect = 0.5;
@@ -9,7 +12,7 @@ public class StrategyProbability extends Strategy {
 
     public StrategyProbability() {
         name = "Probability";
-        probabilityDefect = Math.random();
+        probabilityDefect = Search.r.nextDouble();
     }
 
     public int nextMove() {
@@ -92,7 +95,7 @@ public class StrategyProbability extends Strategy {
 
     }
 
-    public void doPrintGenes(FileWriter output){
+    public void doPrintGenes(FileWriter output)throws java.io.IOException{
 	    output.write("StrategyProbability\n");
 	    output.write("Probability Defect = ");
 	    Hwrite.right(probabilityDefect, 8, output);

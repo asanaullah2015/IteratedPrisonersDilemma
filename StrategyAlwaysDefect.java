@@ -2,6 +2,9 @@
  * Class containing the always-cooperate strategy.
  * @author	081028AW
  */
+import java.io.*;
+import java.util.*;
+import java.text.*;
 public class StrategyAlwaysDefect extends Strategy
    {
   /**
@@ -29,7 +32,7 @@ public class StrategyAlwaysDefect extends Strategy
 	   child1 = new StrategyAlwaysDefect();
 	   child2 = new StrategyAlwaysDefect();
    }
-   public void doPrintGenes(FileWriter output){
+   public void doPrintGenes(FileWriter output)throws java.io.IOException{
 	   output.write("StrategyAlwaysDefect");
    }
    }  /* class StrategyAlwaysDefect */
