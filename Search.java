@@ -23,15 +23,16 @@ public class Search {
 	public static double[] sclFitness;
 	public static double[] proFitness;
 
-	public static Strategy bestOfGenStrategy;
+	//public static Strategy bestOfGenStrategy;
 	public static int bestOfGenR;
 	public static int bestOfGenG;
-	public static Strategy bestOfRunStrategy;
+	//public static Strategy bestOfRunStrategy;
 	public static int bestOfRunR;
 	public static int bestOfRunG;
-	public static Strategy bestOverAllStrategy;
+	//public static Strategy bestOverAllStrategy;
 	public static int bestOverAllR;
 	public static int bestOverAllG;
+	public static Strategy[] bestStrategy; 	//0 = Gen, 1 = Run, 2 = OverAll
 
 	public static double sumRawFitness;
 	public static double sumRawFitness2;	// sum of squares of fitness
@@ -83,7 +84,7 @@ public class Search {
 		FileWriter summaryOutput = new FileWriter(summaryFileName);
 		parmValues.outputParameters(summaryOutput);
 
-	//	Set up Fitness Statistics matrix
+	//	Set up Fitness Statistics matri1x
 		fitnessStats = new double[2][Parameters.generations];
 		for (int i=0; i<Parameters.generations; i++){
 			fitnessStats[0][i] = 0;
@@ -114,11 +115,12 @@ public class Search {
 			defaultWorst = 0;
 		}
 
-		bestOfGenStrategy = new Strategy();
+		bestStrategy = new Strategy[3];
+		bestStrategy[0] = new Strategy();
 		double bestOfGenStrategyrawFitness = defaultBest;
-		bestOfRunStrategy = new Strategy();
+		bestStrategy[1] = new Strategy();
 		double bestOfRunStrategyrawFitness = defaultBest;
-		bestOverAllStrategy = new Strategy();
+		bestStrategy[2] = new Strategy();
 		double bestOverAllStrategyrawFitness = defaultBest;
 
 		//  Start program for multiple runs
@@ -178,59 +180,59 @@ public class Search {
 				}
 
 				//	Test Fitness of Each Member
-                int numSteps = Parameters.getNextSteps();
+				int numSteps = Parameters.getNextSteps();
 				for (int i = 0; i<Parameters.popSize; i++){
 					for (int j = i; j<Parameters.popSize; j++){
 						IteratedPD ipd = new IteratedPD(member[i], member[j]);
 						ipd.runSteps(numSteps);
-						rawFitness[i] += ipd.player1Score();
-						rawFitness[j] += ipd.player2Score();
+						rawFitness[i] += ipd.player1Score()/numSteps;
+						rawFitness[j] += ipd.player2Score()/numSteps;
 					}
 				}
 
 
 				for (int i=0; i<Parameters.popSize; i++){
 					
-					sumRawFitness = sumRawFitness + rawFitness[i];
+					sumRawFitness = sumRawFitness + rawFitness[i]/numSteps;
 					sumRawFitness2 = sumRawFitness2 +
 						rawFitness[i] * rawFitness[i];
 
 					if (Parameters.minORmax.equals("max")){
 						if (rawFitness[i] > bestOfGenStrategyrawFitness){
-                            bestOfGenStrategyrawFitness = rawFitness[i];
-							member[i].copytoChild(bestOfGenStrategy);
+							bestOfGenStrategyrawFitness = rawFitness[i];
+							member[i].copytoChild(bestStrategy, 0);
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
 						if (rawFitness[i] > bestOfRunStrategyrawFitness){
-                            bestOfRunStrategyrawFitness = rawFitness[i];
-							member[i].copytoChild(bestOfRunStrategy);
+							bestOfRunStrategyrawFitness = rawFitness[i];
+							member[i].copytoChild(bestStrategy, 1);
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
 						if (rawFitness[i] > bestOverAllStrategyrawFitness){
-                            bestOverAllStrategyrawFitness = rawFitness[i];
-							member[i].copytoChild(bestOverAllStrategy);
+							bestOverAllStrategyrawFitness = rawFitness[i];
+							member[i].copytoChild(bestStrategy, 2);
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
 					}
 					else {
 						if (rawFitness[i] < bestOfGenStrategyrawFitness){
-                            bestOfGenStrategyrawFitness = rawFitness[i];
-							member[i].copytoChild(bestOfGenStrategy);
+							bestOfGenStrategyrawFitness = rawFitness[i];
+							member[i].copytoChild(bestStrategy, 0);
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
 						if (rawFitness[i] < bestOfRunStrategyrawFitness){
-                            bestOfRunStrategyrawFitness = rawFitness[i];
-							member[i].copytoChild(bestOfRunStrategy);
+							bestOfRunStrategyrawFitness = rawFitness[i];
+							member[i].copytoChild(bestStrategy, 1);
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
 						if (rawFitness[i] < bestOverAllStrategyrawFitness){
-                            bestOverAllStrategyrawFitness = rawFitness[i];
-							member[i].copytoChild(bestOverAllStrategy);
+							bestOverAllStrategyrawFitness = rawFitness[i];
+							member[i].copytoChild(bestStrategy, 2);
 							bestOverAllR = R;
 							bestOverAllG = G;
 						}
@@ -373,11 +375,11 @@ public class Search {
 					//	Crossover Two Parents to Create Two Children
 					randnum = r.nextDouble();
 					if (randnum < Parameters.xoverRate){
-						Strategy.mateParents(parent1, parent2, member[parent1], member[parent2], child[i], child[i+1]);
+						Strategy.mateParents(parent1, parent2, member[parent1], member[parent2], child, i, i+1);
 					}
 					else {
-						member[parent1].copytoChild(child[i]);
-						member[parent2].copytoChild(child[i+1]);
+						member[parent1].copytoChild(child, i);
+						member[parent2].copytoChild(child, i+1);
 					}
 				} // End Crossover
 
@@ -388,7 +390,7 @@ public class Search {
 
 				//	Swap Children with Last Generation
 				for (int i=0; i<Parameters.popSize; i++){
-					child[i].copytoChild(member[i]);
+					child[i].copytoChild(member, i);
 				}
 
 			} //  Repeat the above loop for each generation
@@ -396,7 +398,7 @@ public class Search {
 			Hwrite.left(bestOfRunR, 4, summaryOutput);
 			Hwrite.right(bestOfRunG, 4, summaryOutput);
 
-			bestOfRunStrategy.doPrintGenes(summaryOutput);
+			bestStrategy[1].doPrintGenes(summaryOutput);
 
 			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategyrawFitness);
 
@@ -404,7 +406,7 @@ public class Search {
 
 		Hwrite.left("B", 8, summaryOutput);
 
-		bestOverAllStrategy.doPrintGenes(summaryOutput);
+		bestStrategy[2].doPrintGenes(summaryOutput);
 
 		//	Output Fitness Statistics matrix
 		summaryOutput.write("Gen                 AvgFit              BestFit \n");

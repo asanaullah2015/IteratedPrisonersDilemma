@@ -25,72 +25,72 @@ public class StrategyProbability extends Strategy {
             probabilityDefect = Math.random();
         }
     }
-    public void copyToChild(StrategyProbability child) {
-        child = new StrategyProbability();
-        child.probabilityDefect = this.probabilityDefect;
+    public void copyToChild(StrategyProbability [] children, int cnum) {
+        children[cnum] = new StrategyProbability();
+        children[cnum].probabilityDefect = this.probabilityDefect;
     }
 
-    public void crossover(int pnum2, StrategyProbability parent2, StrategyProbability child1, StrategyProbability child2) {
+    public void crossover(int pnum2, StrategyProbability parent2, StrategyProbability [] children, int cnum1, int cnum2) {
         // Create children
-        child1 = new StrategyProbability();
-        child2 = new StrategyProbability();
+        children[cnum1] = new StrategyProbability();
+        children[cnum2] = new StrategyProbability();
 
         // Generate random numbers to determine how to crossover
         int randnum1 = Search.r.nextInt(2);
         int randnum2 = Search.r.nextInt(2);
 
-        if (randnum1 == 0) { // Subtract parents to create child1
+        if (randnum1 == 0) { // Subtract parents to create children[cnum1]
             int subtract1from2 = Search.r.nextInt(2); // Subtraction is not commutative, randomly subtract one from the other
             if (subtract1from2 == 0) {
                 if ((this.probabilityDefect - parent2.probabilityDefect) < 0.0) { // Keep difference above 0
-                    child1.probabilityDefect = ((this.probabilityDefect - parent2.probabilityDefect) + 1.0); 
+                    children[cnum1].probabilityDefect = ((this.probabilityDefect - parent2.probabilityDefect) + 1.0); 
                 }
                 else {
-                    child1.probabilityDefect = (this.probabilityDefect - parent2.probabilityDefect);
+                    children[cnum1].probabilityDefect = (this.probabilityDefect - parent2.probabilityDefect);
                 }
             }
             else {
                 if ((parent2.probabilityDefect - this.probabilityDefect) < 0.0) { // Keep difference above 0
-                    child1.probabilityDefect = ((parent2.probabilityDefect - this.probabilityDefect) + 1.0); 
+                    children[cnum1].probabilityDefect = ((parent2.probabilityDefect - this.probabilityDefect) + 1.0); 
                 }
                 else {
-                    child1.probabilityDefect = (parent2.probabilityDefect - this.probabilityDefect);
+                    children[cnum1].probabilityDefect = (parent2.probabilityDefect - this.probabilityDefect);
                 }
             }
         }
         else { // Add parents to create child1
             if ((this.probabilityDefect + parent2.probabilityDefect) > 1.0) { // Keep sum below 1
-                child1.probabilityDefect = ((this.probabilityDefect + parent2.probabilityDefect) - 1.0);
+                children[cnum1].probabilityDefect = ((this.probabilityDefect + parent2.probabilityDefect) - 1.0);
             }
             else {
-                child1.probabilityDefect = (this.probabilityDefect + parent2.probabilityDefect);
+                children[cnum1].probabilityDefect = (this.probabilityDefect + parent2.probabilityDefect);
             }
         }
-        if (randnum2 == 0) { // Subtract parents to create child2
+        if (randnum2 == 0) { // Subtract parents to create children[cnum2]
             int subtract1from2 = Search.r.nextInt(2); // Subtraction is not commutative, randomly subtract one from the other
             if (subtract1from2 == 0) {
                 if ((this.probabilityDefect - parent2.probabilityDefect) < 0.0) { // Keep difference above 0
-                    child2.probabilityDefect = ((this.probabilityDefect - parent2.probabilityDefect) + 1.0); 
+                    children[cnum2].probabilityDefect = ((this.probabilityDefect - parent2.probabilityDefect) + 1.0); 
                 }
                 else {
-                    child2.probabilityDefect = (this.probabilityDefect - parent2.probabilityDefect);
+                    children[cnum2].probabilityDefect = (this.probabilityDefect - parent2.probabilityDefect);
                 }
             }
             else {
                 if ((parent2.probabilityDefect - this.probabilityDefect) < 0.0) { // Keep difference above 0
-                    child2.probabilityDefect = ((parent2.probabilityDefect - this.probabilityDefect) + 1.0); 
+                    children[cnum2].probabilityDefect = ((parent2.probabilityDefect - this.probabilityDefect) + 1.0); 
                 }
                 else {
-                    child2.probabilityDefect = (parent2.probabilityDefect - this.probabilityDefect);
+                    children[cnum2].probabilityDefect = (parent2.probabilityDefect - this.probabilityDefect);
                 }
             }
         }
-        else { // Add parents to create child2
+        else { // Add parents to create children[cnum2]
             if ((parent2.probabilityDefect + this.probabilityDefect) > 1.0) { // Keep sum below 1
-                child2.probabilityDefect = ((parent2.probabilityDefect + this.probabilityDefect) - 1.0);
+                children[cnum2].probabilityDefect = ((parent2.probabilityDefect + this.probabilityDefect) - 1.0);
             }
             else {
-                child2.probabilityDefect = (parent2.probabilityDefect + this.probabilityDefect);
+                children[cnum2].probabilityDefect = (parent2.probabilityDefect + this.probabilityDefect);
             }
         }
 

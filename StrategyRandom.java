@@ -28,12 +28,12 @@ public class StrategyRandom extends Strategy
 
    public void doMutation(){};
 
-   public void copytoChild(Strategy child){
-	   child = new StrategyRandom();
+   public void copytoChild(Strategy [] child, int cnum){
+	   child[cnum] = new StrategyRandom();
    }
-   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
-	   child1 = new StrategyRandom();
-	   child2 = new StrategyRandom();
+   public void crossover(int pnum2, Strategy parent2, Strategy [] children, int cnum1, int cnum2){
+	   children[cnum1] = new StrategyRandom();
+	   children[cnum2] = new StrategyRandom();
    } 
    public void doPrintGenes(FileWriter output)throws java.io.IOException{
 	   output.write("StrategyRandom, probabilitDefect=0.5\n");

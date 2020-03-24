@@ -26,12 +26,12 @@ public class StrategyTitForTat extends Strategy
 
    public void doMutation(){};
       
-   public void copytoChild(Strategy child){
-	   child = new StrategyTitForTat();
+   public void copytoChild(Strategy []children, int cnum){
+	   children[cnum] = new StrategyTitForTat();
    }
-   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
-	   child1 = new StrategyTitForTat();
-	   child2 = new StrategyTitForTat();
+   public void crossover(int pnum2, Strategy parent2, Strategy [] children, int cnum1, int cnum2){
+	   children[cnum1] = new StrategyTitForTat();
+	   children[cnum2] = new StrategyTitForTat();
    }
 
    public void doPrintGenes(FileWriter output)throws java.io.IOException{

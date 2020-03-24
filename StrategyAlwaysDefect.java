@@ -25,12 +25,12 @@ public class StrategyAlwaysDefect extends Strategy
       
    public void doMutation(){};
 
-   public void copytoChild(Strategy child){
-	   child = new StrategyAlwaysDefect();
+   public void copytoChild(Strategy [] children, int cnum){
+	   children[cnum] = new StrategyAlwaysDefect();
    }
-   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2){
-	   child1 = new StrategyAlwaysDefect();
-	   child2 = new StrategyAlwaysDefect();
+   public void crossover(int pnum2, Strategy parent2, Strategy[] children, int cnum1, int cnum2){
+	   children[cnum1] = new StrategyAlwaysDefect();
+	   children[cnum2] = new StrategyAlwaysDefect();
    }
    public void doPrintGenes(FileWriter output)throws java.io.IOException{
 	   output.write("StrategyAlwaysDefect");

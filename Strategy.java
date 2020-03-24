@@ -80,28 +80,28 @@ public class Strategy extends Object
 	   }
 	   return(-1);
    }
-   public static void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy child1, Strategy child2) {
+   public static void mateParents(int pnum1, int pnum2, Strategy parent1, Strategy parent2, Strategy[] children, int cnum1, int cnum2) {
 	if (parent1.getClass().equals(parent2.getClass())){
-		parent1.crossover(pnum2, parent2, child1, child2);
+		parent1.crossover(pnum2, parent2, children, cnum1, cnum2);
 	}
 	else {
 		int x = Search.r.nextInt(2);
 		int y = Search.r.nextInt(2);
 		if (x == 0){
-			parent1.copytoChild(child1);
+			parent1.copytoChild(children, cnum1);
 		}
 		else{
-			parent2.copytoChild(child1);
+			parent2.copytoChild(children, cnum1);
 		}
 		if (y == 0){
-			parent1.copytoChild(child2);
+			parent1.copytoChild(children, cnum2);
 		}
 		else {
-			parent2.copytoChild(child2);
+			parent2.copytoChild(children, cnum2);
 		}
 	}
    }
-   public void copytoChild(Strategy child) {};
-   public void crossover(int pnum2, Strategy parent2, Strategy child1, Strategy child2) {};
+   public void copytoChild(Strategy[] child, int cnum) {};
+   public void crossover(int pnum2, Strategy parent2, Strategy[] children, int cnum1, int cnum2) {};
    public void doPrintGenes(FileWriter output)throws java.io.IOException{}
    }  /* class Strategy */
