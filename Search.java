@@ -133,7 +133,7 @@ public class Search {
 			for (int i=0; i<Parameters.popSize; i++){
 				//--------------------------
 				//TODO: Make actual random generation.
-				int str = r.nextInt(5); //Ignoring ours for now for testing purposes
+				int str = r.nextInt(7); //Ignoring ours for now for testing purposes
 				switch(str){
 					case 0:
 						member[i] = new StrategyAlwaysCooperate();
@@ -154,7 +154,7 @@ public class Search {
 						member[i] = new StrategyProbability();
 						break;
 					case 6:
-						//member[i] = new StrategyMovingAverage();
+						member[i] = new StrategyMovingAverage();
 						break;
 				}
 				child[i] = new Strategy();

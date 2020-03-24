@@ -70,7 +70,7 @@ public class Strategy extends Object
 					}
 				}
 			}
-			for (int i = Parameters.tournamentSize; i > 0; i--)
+			for (int i = Parameters.tournamentSize-1; i > 0; i--)
 				if (Search.r.nextDouble() < 0.6)
 					return candidate[i];
 			return candidate[0];

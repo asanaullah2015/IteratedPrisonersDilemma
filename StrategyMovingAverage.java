@@ -3,8 +3,8 @@ import java.util.*;
 import java.text.*;
 public class StrategyMovingAverage extends Strategy {
 
-    public Queue<int> initialHistory;
-    public Queue<int> history;
+    public Queue<Integer> initialHistory;
+    public Queue<Integer> history;
     public int historyLength;
     public double historySum;
     /**
@@ -13,14 +13,14 @@ public class StrategyMovingAverage extends Strategy {
     // 0 = defect, 1 = cooperate
 
     public StrategyMovingAverage() {
-	intialHistory = new Queue<int>;
-	history = new Queue<int>;
+	initialHistory = new LinkedList<>();
+	history = new LinkedList<>();
         name = "Moving Average";
         historyLength = Parameters.historyBegin + Search.r.nextInt(Parameters.historyEnd-Parameters.historyBegin);
 	int sum = 0;
 	for (int i = 0; i<historyLength; i++){
 		int th = 0;
-		if (Parameters.nextDouble()<0.5){
+		if (Search.r.nextDouble()<0.5){
 			th = 1;
 			sum++;
 		}
@@ -37,13 +37,13 @@ public class StrategyMovingAverage extends Strategy {
     }
 
     public void doMutation() {
-	intialHistory = new Queue<int>;
-	history = new Queue<int>;
+	initialHistory = new LinkedList<>();
+	history = new LinkedList<>();
         historyLength = Parameters.historyBegin + Search.r.nextInt(Parameters.historyEnd-Parameters.historyBegin);
 	int sum = 0;
 	for (int i = 0; i<historyLength; i++){
 		int th = 0;
-		if (Parameters.nextDouble()<0.5){
+		if (Search.r.nextDouble()<0.5){
 			th = 1;
 			sum++;
 		}
@@ -54,8 +54,8 @@ public class StrategyMovingAverage extends Strategy {
     }
     public void copyToChild(StrategyMovingAverage [] children, int cnum) {
         children[cnum] = new StrategyMovingAverage();
-	children[cnum].intialHistory = new Queue<int>;
-	children[cnum].history = new Queue<int>;
+	children[cnum].initialHistory = new LinkedList<>();
+	children[cnum].history = new LinkedList<>();
 	children[cnum].historyLength = historyLength;
 	int sum = 0;
 	for (int i = 0; i<historyLength; i++){
@@ -67,69 +67,63 @@ public class StrategyMovingAverage extends Strategy {
 	children[cnum].historySum = sum;
     }
 
-    public void crossover(int pnum2, StrategyProbability parent2, StrategyProbability [] children, int cnum1, int cnum2) {
+    public void crossover(int pnum2, StrategyMovingAverage parent2, StrategyMovingAverage [] children, int cnum1, int cnum2) {
+	int l = Math.min(historyLength, parent2.historyLength);
+	int crossoverPoint = Search.r.nextInt(l);
+
         // Create children
-        children[cnum1] = new StrategyProbability();
-        children[cnum2] = new StrategyProbability();
+        children[cnum1] = new StrategyMovingAverage();
+        children[cnum2] = new StrategyMovingAverage();
 
-        // Generate random numbers to determine how to crossover
-        int randnum1 = Search.r.nextInt(2);
-        int randnum2 = Search.r.nextInt(2);
+	children[cnum1].initialHistory = new LinkedList<>();
+	children[cnum1].history = new LinkedList<>();
+	children[cnum2].initialHistory = new LinkedList<>();
+	children[cnum2].history = new LinkedList<>();
 
-        if (randnum1 == 0) { // Subtract parents to create children[cnum1]
-            int subtract1from2 = Search.r.nextInt(2); // Subtraction is not commutative, randomly subtract one from the other
-            if (subtract1from2 == 0) {
-                if ((this.probabilityDefect - parent2.probabilityDefect) < 0.0) { // Keep difference above 0
-                    children[cnum1].probabilityDefect = ((this.probabilityDefect - parent2.probabilityDefect) + 1.0); 
-                }
-                else {
-                    children[cnum1].probabilityDefect = (this.probabilityDefect - parent2.probabilityDefect);
-                }
-            }
-            else {
-                if ((parent2.probabilityDefect - this.probabilityDefect) < 0.0) { // Keep difference above 0
-                    children[cnum1].probabilityDefect = ((parent2.probabilityDefect - this.probabilityDefect) + 1.0); 
-                }
-                else {
-                    children[cnum1].probabilityDefect = (parent2.probabilityDefect - this.probabilityDefect);
-                }
-            }
-        }
-        else { // Add parents to create child1
-            if ((this.probabilityDefect + parent2.probabilityDefect) > 1.0) { // Keep sum below 1
-                children[cnum1].probabilityDefect = ((this.probabilityDefect + parent2.probabilityDefect) - 1.0);
-            }
-            else {
-                children[cnum1].probabilityDefect = (this.probabilityDefect + parent2.probabilityDefect);
-            }
-        }
-        if (randnum2 == 0) { // Subtract parents to create children[cnum2]
-            int subtract1from2 = Search.r.nextInt(2); // Subtraction is not commutative, randomly subtract one from the other
-            if (subtract1from2 == 0) {
-                if ((this.probabilityDefect - parent2.probabilityDefect) < 0.0) { // Keep difference above 0
-                    children[cnum2].probabilityDefect = ((this.probabilityDefect - parent2.probabilityDefect) + 1.0); 
-                }
-                else {
-                    children[cnum2].probabilityDefect = (this.probabilityDefect - parent2.probabilityDefect);
-                }
-            }
-            else {
-                if ((parent2.probabilityDefect - this.probabilityDefect) < 0.0) { // Keep difference above 0
-                    children[cnum2].probabilityDefect = ((parent2.probabilityDefect - this.probabilityDefect) + 1.0); 
-                }
-                else {
-                    children[cnum2].probabilityDefect = (parent2.probabilityDefect - this.probabilityDefect);
-                }
-            }
-        }
-        else { // Add parents to create children[cnum2]
-            if ((parent2.probabilityDefect + this.probabilityDefect) > 1.0) { // Keep sum below 1
-                children[cnum2].probabilityDefect = ((parent2.probabilityDefect + this.probabilityDefect) - 1.0);
-            }
-            else {
-                children[cnum2].probabilityDefect = (parent2.probabilityDefect + this.probabilityDefect);
-            }
-        }
+	children[cnum1].historySum = 0;
+	for (int i = 0; i<crossoverPoint; i++){
+		int th1 = initialHistory.remove();
+		int th2 = parent2.initialHistory.remove();
+		children[cnum1].initialHistory.add(th1);
+		children[cnum1].history.add(th1);
+		children[cnum1].historySum += th1;
+
+		children[cnum2].initialHistory.add(th2);
+		children[cnum2].history.add(th2);
+		children[cnum2].historySum += th2;
+	}
+	for (int i = crossoverPoint; i < l; i++){
+		int th2 = initialHistory.remove();
+		int th1 = parent2.initialHistory.remove();
+		children[cnum1].initialHistory.add(th1);
+		children[cnum1].history.add(th1);
+		children[cnum1].historySum += th1;
+
+		children[cnum2].initialHistory.add(th2);
+		children[cnum2].history.add(th2);
+		children[cnum2].historySum += th2;
+	}
+	if (historyLength>parent2.historyLength){
+		for (int i = l; i<historyLength; i++){
+			int th2 = initialHistory.remove();
+			children[cnum2].initialHistory.add(th2);
+			children[cnum2].history.add(th2);
+			children[cnum2].historySum += th2;
+		}
+		children[cnum2].historyLength = historyLength;
+	}
+	else {
+		for (int i = l; i < parent2.historyLength; i++){
+			int th1 = parent2.initialHistory.remove();
+			children[cnum1].initialHistory.add(th1);
+			children[cnum1].history.add(th1);
+			children[cnum1].historySum += th1;
+		}
+		children[cnum1].historyLength = parent2.historyLength;
+	}
+
+
+
 
     }
 
