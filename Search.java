@@ -55,6 +55,7 @@ public class Search {
 	private static double TmemberFitness;
 
 	private static double fitnessStats[][];  // 0=Avg, 1=Best
+	private static int   composition[][][];
 
 /*******************************************************************************
 *                              CONSTRUCTORS                                    *
@@ -83,6 +84,8 @@ public class Search {
 		String summaryFileName = Parameters.expID + "_summary.txt";
 		FileWriter summaryOutput = new FileWriter(summaryFileName);
 		parmValues.outputParameters(summaryOutput);
+		FileWriter summaryComposition = new FileWriter("composition.txt");
+		summaryComposition.write("   AC   AD    R  TFT TFTT    P MVAV\n");
 
 	//	Set up Fitness Statistics matri1x
 		fitnessStats = new double[2][Parameters.generations];
@@ -90,6 +93,16 @@ public class Search {
 			fitnessStats[0][i] = 0;
 			fitnessStats[1][i] = 0;
 		}
+	//	Set up Composition matrix
+		composition = new int[7][Parameters.numRuns][Parameters.generations];
+		for (int i = 0; i<7; i++){
+			for(int j = 0; j<Parameters.numRuns; j++){
+				for (int k=0; k<Parameters.generations; k++){
+					composition[i][j][k] = 0;
+				}
+			}
+		}
+
 
 	//	Problem Specific Setup - For new new fitness function problems, create
 	//	the appropriate class file (extending FitnessFunction.java) and add
@@ -251,6 +264,31 @@ public class Search {
 							(Parameters.popSize-1)
 							);
 
+				//Accumulate composition statistics
+				for (int i = 0; i<Parameters.popSize; i++){
+					if (member[i] instanceof StrategyAlwaysCooperate){
+						composition[0][R-1][G]++;
+					}
+					if (member[i] instanceof StrategyAlwaysDefect){
+						composition[1][R-1][G]++;
+					}
+					if (member[i] instanceof StrategyRandom){
+						composition[2][R-1][G]++;
+					}
+					if (member[i] instanceof StrategyTitForTat){
+						composition[3][R-1][G]++;
+					}
+					if (member[i] instanceof StrategyTitForTwoTats){
+						composition[4][R-1][G]++;
+					}
+					if (member[i] instanceof StrategyProbability){
+						composition[5][R-1][G]++;
+					}
+					if (member[i] instanceof StrategyMovingAverage){
+						composition[6][R-1][G]++;
+					}
+				}
+
 				// Output generation statistics to screen
 				System.out.println(R + "\t" + G +  "\t" + (int)bestOfGenStrategyrawFitness + "\t" + averageRawFitness + "\t" + stdevRawFitness);
 
@@ -263,7 +301,12 @@ public class Search {
 				Hwrite.right(averageRawFitness, 11, 3, summaryOutput);
 				Hwrite.right(stdevRawFitness, 11, 3, summaryOutput);
 				summaryOutput.write("\n");
-
+				
+				//Output generation statistics to summary file
+				for (int i =0; i<7; i++){
+					Hwrite.right(composition[i][R-1][G], 5, summaryComposition);
+				}
+				summaryComposition.write("\n");
 
 		// *********************************************************************
 		// **************** SCALE FITNESS OF EACH MEMBER AND SUM ***************
@@ -404,6 +447,7 @@ public class Search {
 			summaryOutput.write(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategyrawFitness+"\n\n");
 			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategyrawFitness);
 
+			summaryComposition.write("\n");
 		} //End of a Run
 
 		summaryOutput.write("\n");
@@ -423,6 +467,7 @@ public class Search {
 
 		summaryOutput.write("\n");
 		summaryOutput.close();
+		summaryComposition.close();
 
 		System.out.println();
 		System.out.println("Start:  " + startTime);
