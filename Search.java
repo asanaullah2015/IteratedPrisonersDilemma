@@ -193,7 +193,7 @@ public class Search {
 
 				for (int i=0; i<Parameters.popSize; i++){
 					
-					sumRawFitness = sumRawFitness + rawFitness[i]/numSteps;
+					sumRawFitness = sumRawFitness + rawFitness[i];
 					sumRawFitness2 = sumRawFitness2 +
 						rawFitness[i] * rawFitness[i];
 
@@ -397,16 +397,20 @@ public class Search {
 
 			Hwrite.left(bestOfRunR, 4, summaryOutput);
 			Hwrite.right(bestOfRunG, 4, summaryOutput);
+			summaryOutput.write("\n");
 
 			bestStrategy[1].doPrintGenes(summaryOutput);
 
+			summaryOutput.write(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategyrawFitness+"\n\n");
 			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunStrategyrawFitness);
 
 		} //End of a Run
 
-		Hwrite.left("B", 8, summaryOutput);
+		summaryOutput.write("\n");
+		summaryOutput.write("B" + "\t"+ (int)bestOverAllStrategyrawFitness+"\n");
 
 		bestStrategy[2].doPrintGenes(summaryOutput);
+		summaryOutput.write("\n");
 
 		//	Output Fitness Statistics matrix
 		summaryOutput.write("Gen                 AvgFit              BestFit \n");

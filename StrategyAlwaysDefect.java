@@ -33,6 +33,6 @@ public class StrategyAlwaysDefect extends Strategy
 	   children[cnum2] = new StrategyAlwaysDefect();
    }
    public void doPrintGenes(FileWriter output)throws java.io.IOException{
-	   output.write("StrategyAlwaysDefect");
+	   output.write("StrategyAlwaysDefect\n");
    }
    }  /* class StrategyAlwaysDefect */
