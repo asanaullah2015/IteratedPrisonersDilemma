@@ -18,6 +18,7 @@ public class Search {
 *******************************************************************************/
 
 	public static Strategy[] member;
+	public static Strategy[] testPop;
 	public static Strategy[] child;
 	public static double[] rawFitness;
 	public static double[] sclFitness;
@@ -103,6 +104,36 @@ public class Search {
 			}
 		}
 
+	//	Initialize testPop
+		testPop = new Strategy[1000];
+		for (int i=0; i<1000; i++){
+			//--------------------------
+			//TODO: Make actual random generation.
+			int str = r.nextInt(7); //Ignoring ours for now for testing purposes
+			switch(str){
+				case 0:
+					testPop[i] = new StrategyAlwaysCooperate();
+					break;
+				case 1:
+					testPop[i] = new StrategyAlwaysDefect();
+					break;
+				case 2:
+					testPop[i] = new StrategyRandom();
+					break;
+				case 3:
+					testPop[i] = new StrategyTitForTat();
+					break;
+				case 4:
+					testPop[i] = new StrategyTitForTwoTats();
+					break;
+				case 5:
+					testPop[i] = new StrategyProbability();
+					break;
+				case 6:
+					testPop[i] = new StrategyMovingAverage();
+					break;
+			}
+		}
 
 	//	Problem Specific Setup - For new new fitness function problems, create
 	//	the appropriate class file (extending FitnessFunction.java) and add
@@ -195,11 +226,10 @@ public class Search {
 				//	Test Fitness of Each Member
 				int numSteps = Parameters.getNextSteps();
 				for (int i = 0; i<Parameters.popSize; i++){
-					for (int j = i; j<Parameters.popSize; j++){
-						IteratedPD ipd = new IteratedPD(member[i], member[j]);
+					for (int j = 0; j<1000; j++){
+						IteratedPD ipd = new IteratedPD(member[i], testPop[j]);
 						ipd.runSteps(numSteps);
 						rawFitness[i] += ipd.player1Score()/numSteps;
-						rawFitness[j] += ipd.player2Score()/numSteps;
 					}
 				}
 
