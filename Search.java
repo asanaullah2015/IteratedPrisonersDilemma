@@ -178,7 +178,7 @@ public class Search {
 				}
 
 				//	Test Fitness of Each Member
-				int numSteps = Parameters.getNextSteps();
+                int numSteps = Parameters.getNextSteps();
 				for (int i = 0; i<Parameters.popSize; i++){
 					for (int j = i; j<Parameters.popSize; j++){
 						IteratedPD ipd = new IteratedPD(member[i], member[j]);
@@ -197,16 +197,19 @@ public class Search {
 
 					if (Parameters.minORmax.equals("max")){
 						if (rawFitness[i] > bestOfGenStrategyrawFitness){
+                            bestOfGenStrategyrawFitness = rawFitness[i];
 							member[i].copytoChild(bestOfGenStrategy);
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
 						if (rawFitness[i] > bestOfRunStrategyrawFitness){
+                            bestOfRunStrategyrawFitness = rawFitness[i];
 							member[i].copytoChild(bestOfRunStrategy);
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
 						if (rawFitness[i] > bestOverAllStrategyrawFitness){
+                            bestOverAllStrategyrawFitness = rawFitness[i];
 							member[i].copytoChild(bestOverAllStrategy);
 							bestOverAllR = R;
 							bestOverAllG = G;
@@ -214,16 +217,19 @@ public class Search {
 					}
 					else {
 						if (rawFitness[i] < bestOfGenStrategyrawFitness){
+                            bestOfGenStrategyrawFitness = rawFitness[i];
 							member[i].copytoChild(bestOfGenStrategy);
 							bestOfGenR = R;
 							bestOfGenG = G;
 						}
 						if (rawFitness[i] < bestOfRunStrategyrawFitness){
+                            bestOfRunStrategyrawFitness = rawFitness[i];
 							member[i].copytoChild(bestOfRunStrategy);
 							bestOfRunR = R;
 							bestOfRunG = G;
 						}
 						if (rawFitness[i] < bestOverAllStrategyrawFitness){
+                            bestOverAllStrategyrawFitness = rawFitness[i];
 							member[i].copytoChild(bestOverAllStrategy);
 							bestOverAllR = R;
 							bestOverAllG = G;

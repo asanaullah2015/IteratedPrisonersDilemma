@@ -25,8 +25,9 @@ public class StrategyProbability extends Strategy {
             probabilityDefect = Math.random();
         }
     }
-    public void copyToChild(Strategy child) {
+    public void copyToChild(StrategyProbability child) {
         child = new StrategyProbability();
+        child.probabilityDefect = this.probabilityDefect;
     }
 
     public void crossover(int pnum2, StrategyProbability parent2, StrategyProbability child1, StrategyProbability child2) {
