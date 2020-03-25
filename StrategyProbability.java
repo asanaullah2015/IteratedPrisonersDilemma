@@ -22,7 +22,7 @@ public class StrategyProbability extends Strategy {
 
     public void doMutation() {
         if (Search.r.nextDouble() < Parameters.mutationRate) {
-            probabilityDefect = Math.random();
+            probabilityDefect = Search.r.nextDouble();
         }
     }
     public void copyToChild(StrategyProbability [] children, int cnum) {

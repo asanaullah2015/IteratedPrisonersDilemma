@@ -105,8 +105,8 @@ public class Search {
 		}
 
 	//	Initialize testPop
-		testPop = new Strategy[1000];
-		for (int i=0; i<1000; i++){
+		testPop = new Strategy[100];
+		for (int i=0; i<100; i++){
 			//--------------------------
 			//TODO: Make actual random generation.
 			int str = r.nextInt(7); //Ignoring ours for now for testing purposes
@@ -226,7 +226,7 @@ public class Search {
 				//	Test Fitness of Each Member
 				int numSteps = Parameters.getNextSteps();
 				for (int i = 0; i<Parameters.popSize; i++){
-					for (int j = 0; j<1000; j++){
+					for (int j = 0; j<100; j++){
 						IteratedPD ipd = new IteratedPD(member[i], testPop[j]);
 						ipd.runSteps(numSteps);
 						rawFitness[i] += ipd.player1Score()/numSteps;
