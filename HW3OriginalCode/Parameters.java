@@ -38,11 +38,6 @@ public class Parameters
 	public static long seed;
 	public static int numGenes;
 	public static int geneSize;
-	public static int tournamentSize;
-	public static int a;
-	public static int b;
-	public static int historyBegin;
-	public static int historyEnd;
 
 /*******************************************************************************
 *                              CONSTRUCTORS                                    *
@@ -63,7 +58,6 @@ public class Parameters
 		popSize = Integer.parseInt(parmInput.readLine().substring(30).trim());
 
 		selectType = Integer.parseInt(parmInput.readLine().substring(30).trim());
-		tournamentSize = Integer.parseInt(parmInput.readLine().substring(30).trim());
 		scaleType = Integer.parseInt(parmInput.readLine().substring(30).trim());
 
 		xoverType = Integer.parseInt(parmInput.readLine().substring(30).trim());
@@ -74,10 +68,6 @@ public class Parameters
 		seed = Long.parseLong(parmInput.readLine().substring(30).trim());
 		numGenes = Integer.parseInt(parmInput.readLine().substring(30).trim());
 		geneSize = Integer.parseInt(parmInput.readLine().substring(30).trim());
-		a = Integer.parseInt(parmInput.readLine().substring(30).trim());
-		b = Integer.parseInt(parmInput.readLine().substring(30).trim());
-		historyBegin = Integer.parseInt(parmInput.readLine().substring(30).trim());
-		historyEnd = Integer.parseInt(parmInput.readLine().substring(30).trim());
 
 		parmInput.close();
 
@@ -108,7 +98,6 @@ public class Parameters
 		output.write("Population Size              :  " + popSize + "\n");
 
 		output.write("Selection Method             :  " + selectType + "\n");
-		output.write("Tournament Size              :  " + tournamentSize + "\n");
 		output.write("Fitness Scaling Type         :  " + scaleType + "\n");
 		output.write("Min or Max Fitness           :  " + minORmax + "\n");
 
@@ -120,15 +109,8 @@ public class Parameters
 		output.write("Random Number Seed           :  " + seed + "\n");
 		output.write("Number of Genes/Points       :  " + numGenes + "\n");
 		output.write("Size of Genes                :  " + geneSize + "\n");
-		output.write("Steps Interval Begin         :  " + a + "\n");
-		output.write("Steps Interval End           :  " + b + "\n");
-		output.write("History Length Begin         :  " + historyBegin + "\n");
-		output.write("History Length End           :  " + historyEnd + "\n");
 
 		output.write("\n\n");
 
-	}
-	public static int getNextSteps(){
-		return a+Search.r.nextInt(b-a);
 	}
 }   // End of Parameters.java **************************************************
